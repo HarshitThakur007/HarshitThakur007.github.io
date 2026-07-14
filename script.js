@@ -16,7 +16,7 @@ const roles = [
   'MERN Stack Developer',
   'React.js Engineer',
   'Front-End Architect',
-  'Building FinTrack right now'
+  'Building FinTrack — AI-powered finance app'
 ];
 const typewriterEl = document.getElementById('typewriter');
 let roleIndex = 0, charIndex = 0, deleting = false;
