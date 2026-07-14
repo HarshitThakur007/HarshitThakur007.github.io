@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harshit Thakur — MERN Stack Developer</title>
+<meta name="description" content="Portfolio of Harshit Thakur, Senior Software Engineer & MERN Stack Developer based in Bengaluru.">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="bg-grid"></div>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#home" class="logo">&lt;HT<span class="cursor">/</span>&gt;</a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#about">about</a>
+      <a href="#skills">skills</a>
+      <a href="#experience">experience</a>
+      <a href="#projects">projects</a>
+      <a href="#education">education</a>
+      <a href="#contact">contact</a>
+    </nav>
+    <a href="#contact" class="btn btn-ghost nav-cta">let's talk</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="container hero-inner">
+      <p class="mono accent reveal">$ whoami</p>
+      <h1 class="reveal">
+        Hi, I'm <span class="accent">Harshit Thakur</span>
+        <span class="typewriter" id="typewriter"></span>
+      </h1>
+      <p class="hero-sub reveal">
+        Senior Software Engineer with 5+ years building scalable, high-performance web
+        applications on the <strong>MERN stack</strong> — MongoDB, Express, React &amp; Node.js —
+        plus enterprise micro-frontend architecture, secure auth (Keycloak), and cloud
+        deployments (AWS, Azure).
+      </p>
+      <div class="hero-meta reveal">
+        <span>📍 Bengaluru, India</span>
+        <span>·</span>
+        <span>Open to relocate — Dubai, UAE</span>
+      </div>
+      <div class="hero-actions reveal">
+        <a href="#projects" class="btn btn-primary">view projects</a>
+        <a href="#contact" class="btn btn-ghost">get in touch</a>
+        <a href="Harshit-Thakur-Resume.pdf" class="btn btn-outline" download>download résumé</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section" id="about">
+    <div class="container">
+      <p class="section-tag mono">01 // about</p>
+      <h2 class="section-title">A bit about me</h2>
+      <div class="about-grid">
+        <p class="about-text reveal">
+          I'm a front-end-leaning full-stack engineer with over five years of experience
+          delivering enterprise-grade web applications for global telecom and SaaS clients.
+          At 6D Technologies I help maintain <strong>One-UI</strong>, a large-scale micro-frontend
+          platform with 10+ independently deployable React modules used across six countries —
+          and I've integrated Keycloak-based SSO and role-based access control for multi-tenant
+          deployments serving 50k+ daily active users.
+        </p>
+        <p class="about-text reveal">
+          I'm currently expanding into full MERN stack product work — building
+          <strong>FinTrack</strong>, a personal finance app, from the ground up. Outside of work
+          I care about clean, maintainable code, solid data structures &amp; algorithms, and
+          turning ambiguous requirements into shippable features.
+        </p>
+      </div>
+      <div class="stat-row reveal">
+        <div class="stat"><span class="stat-num">5+</span><span class="stat-label">years experience</span></div>
+        <div class="stat"><span class="stat-num">10+</span><span class="stat-label">react modules shipped</span></div>
+        <div class="stat"><span class="stat-num">6</span><span class="stat-label">countries served</span></div>
+        <div class="stat"><span class="stat-num">50k+</span><span class="stat-label">daily active users</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="section section-alt" id="skills">
+    <div class="container">
+      <p class="section-tag mono">02 // skills</p>
+      <h2 class="section-title">Tools of the trade</h2>
+      <div class="skills-grid">
+
+        <div class="skill-card reveal">
+          <h3>MERN &amp; Frontend</h3>
+          <div class="chips">
+            <span class="chip chip-accent">MongoDB</span>
+            <span class="chip chip-accent">Node.js</span>
+            <span class="chip chip-accent">React.js</span>
+            <span class="chip">Redux</span>
+            <span class="chip">TypeScript</span>
+            <span class="chip">JavaScript (ES6)</span>
+            <span class="chip">HTML5 / CSS3 / SCSS</span>
+            <span class="chip">Tailwind CSS</span>
+            <span class="chip">jQuery</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal">
+          <h3>Backend &amp; APIs</h3>
+          <div class="chips">
+            <span class="chip">REST API Development</span>
+            <span class="chip">Spring Boot</span>
+            <span class="chip">Microservices</span>
+            <span class="chip">Keycloak (Auth/SSO)</span>
+            <span class="chip">MySQL</span>
+            <span class="chip">Database Design</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal">
+          <h3>DevOps &amp; Cloud</h3>
+          <div class="chips">
+            <span class="chip">Docker</span>
+            <span class="chip">Kubernetes</span>
+            <span class="chip">GitLab CI/CD</span>
+            <span class="chip">AWS</span>
+            <span class="chip">Azure</span>
+            <span class="chip">Linux Scripting</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal">
+          <h3>Tools &amp; Practice</h3>
+          <div class="chips">
+            <span class="chip">Git / Bitbucket</span>
+            <span class="chip">Webpack</span>
+            <span class="chip">Postman</span>
+            <span class="chip">Cypress (E2E)</span>
+            <span class="chip">Jira</span>
+            <span class="chip">Agile / Scrum</span>
+            <span class="chip">TDD</span>
+            <span class="chip">System Design</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="section" id="experience">
+    <div class="container">
+      <p class="section-tag mono">03 // experience</p>
+      <h2 class="section-title">Where I've worked</h2>
+
+      <div class="timeline">
+
+        <div class="tl-item reveal">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="tl-head">
+              <h3>Software Development Engineer</h3>
+              <span class="tl-date">Mar 2023 — Present</span>
+            </div>
+            <p class="tl-org">6D Technologies, Bengaluru</p>
+            <ul>
+              <li>Maintain &amp; enhance <strong>One-UI</strong>, a large-scale micro-frontend platform with 10+ independently deployable React modules for enterprise telecom clients across 6 countries.</li>
+              <li>Integrated Keycloak (v19–26) for Identity &amp; Access Management — SSO, RBAC, and multi-tenant provisioning.</li>
+              <li>Built a Web Filtering Dashboard visualizing real-time traffic for 50k+ daily active users, improving query performance by 30%.</li>
+              <li>Maintain a multi-project reusable UI component library used by external integration teams.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tl-item reveal">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="tl-head">
+              <h3>Software Development Engineer</h3>
+              <span class="tl-date">Mar 2022 — Nov 2022</span>
+            </div>
+            <p class="tl-org">Lavelle Networks, Bengaluru</p>
+            <ul>
+              <li>Built a Web Filtering Dashboard with interactive time-series graphs for traffic volume, domain/category, and user access metrics.</li>
+              <li>Engineered a Resource Utilization Dashboard tracking real-time &amp; historical CPU, disk, and memory metrics.</li>
+              <li>Enhanced an SD-WAN controller's reporting framework and inter-network group policies.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tl-item reveal">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="tl-head">
+              <h3>Software Development Engineer</h3>
+              <span class="tl-date">Jul 2020 — Feb 2022</span>
+            </div>
+            <p class="tl-org">CSG Systems International, Bengaluru</p>
+            <ul>
+              <li>Contributed to Ascendon Rating &amp; Charging, a cloud-based SaaS platform for real-time online charging for global wireless/digital services.</li>
+              <li>Built features with React.js, Redux, Angular, and HTML5/CSS3; used Cypress for end-to-end testing on Azure.</li>
+              <li>Authored comprehensive Cypress test suites, reducing production bugs across frequent SaaS releases.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tl-item reveal">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="tl-head">
+              <h3>Software Developer Intern</h3>
+              <span class="tl-date">Jan 2020 — Jun 2020</span>
+            </div>
+            <p class="tl-org">TechCiti Technologies Pvt. Ltd, Bengaluru</p>
+            <ul>
+              <li>Built "File Sharing with Two-Factor Authentication" — a secure web app implementing 2FA for protected cloud file access.</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="section section-alt" id="projects">
+    <div class="container">
+      <p class="section-tag mono">04 // projects</p>
+      <h2 class="section-title">Things I've built</h2>
+
+      <div class="project-grid">
+
+        <article class="project-card project-card-featured reveal">
+          <div class="project-top">
+            <span class="badge badge-live">🚧 in development</span>
+            <span class="mono project-stack-tag">MERN</span>
+          </div>
+          <h3>FinTrack</h3>
+          <p>
+            A personal finance app that automatically detects and categorizes spending by
+            reading SMS &amp; email transaction alerts — giving users real-time visibility into
+            where their money goes without manual entry.
+          </p>
+          <div class="chips">
+            <span class="chip">MongoDB</span>
+            <span class="chip">Express.js</span>
+            <span class="chip">React.js</span>
+            <span class="chip">Node.js</span>
+            <span class="chip">Email/SMS Parsing</span>
+          </div>
+        </article>
+
+        <article class="project-card reveal">
+          <div class="project-top">
+            <span class="badge">production</span>
+          </div>
+          <h3>One-UI — Micro-Frontend Platform</h3>
+          <p>
+            Enterprise micro-frontend platform with 10+ independently deployable React modules,
+            serving telecom clients across 6 countries with Keycloak-based SSO &amp; RBAC.
+          </p>
+          <div class="chips">
+            <span class="chip">React.js</span>
+            <span class="chip">Micro-Frontends</span>
+            <span class="chip">TypeScript</span>
+            <span class="chip">Keycloak</span>
+          </div>
+        </article>
+
+        <article class="project-card reveal">
+          <div class="project-top">
+            <span class="badge">production</span>
+          </div>
+          <h3>Web Filtering Dashboard</h3>
+          <p>
+            Real-time traffic visualization dashboard for 50k+ daily active users, with
+            time-series graphs and top domain/category reporting; optimized query performance by 30%.
+          </p>
+          <div class="chips">
+            <span class="chip">React.js</span>
+            <span class="chip">Redux</span>
+            <span class="chip">Data Visualization</span>
+          </div>
+        </article>
+
+        <article class="project-card reveal">
+          <div class="project-top">
+            <span class="badge">production</span>
+          </div>
+          <h3>Resource Utilization Dashboard</h3>
+          <p>
+            Real-time &amp; historical monitoring dashboard for CPU, disk, and memory metrics
+            across network devices, built for an SD-WAN controller.
+          </p>
+          <div class="chips">
+            <span class="chip">React.js</span>
+            <span class="chip">Time-Series Data</span>
+            <span class="chip">SD-WAN</span>
+          </div>
+        </article>
+
+        <article class="project-card reveal">
+          <div class="project-top">
+            <span class="badge">academic</span>
+          </div>
+          <h3>Secure File Sharing (2FA)</h3>
+          <p>
+            A secure web app for file sharing with a two-factor authentication mechanism,
+            protecting data integrity for cloud-based access.
+          </p>
+          <div class="chips">
+            <span class="chip">JavaScript</span>
+            <span class="chip">2FA</span>
+            <span class="chip">Web Security</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION / CERTS -->
+  <section class="section" id="education">
+    <div class="container">
+      <p class="section-tag mono">05 // education</p>
+      <h2 class="section-title">Education &amp; certifications</h2>
+
+      <div class="edu-grid">
+        <div class="edu-col reveal">
+          <h3>Education</h3>
+          <div class="edu-item">
+            <p class="edu-degree">MCA — Master of Computer Applications</p>
+            <p class="edu-school">PES University, Bangalore</p>
+            <p class="edu-date">Aug 2018 — Jun 2020 · 7.2 CGPA</p>
+          </div>
+          <div class="edu-item">
+            <p class="edu-degree">BCA — Bachelor of Computer Applications</p>
+            <p class="edu-school">Birla Institute of Technology, Mesra</p>
+            <p class="edu-date">Jul 2015 — May 2018 · 7.0 CGPA</p>
+          </div>
+        </div>
+        <div class="edu-col reveal">
+          <h3>Certifications &amp; Achievements</h3>
+          <ul class="cert-list">
+            <li>Integrated Program in Business Analytics — IIM Indore</li>
+            <li>AWS Basics — KodeKloud</li>
+            <li>Namaste JavaScript &amp; Namaste React — Akshay Saini</li>
+            <li>The Complete JavaScript Course 2021 — Zero to Expert</li>
+            <li>Selenium Testing — Q-Spiders</li>
+            <li>Design Thinking — BITES &amp; Bumblebee</li>
+            <li>'C' Certificate, NCC Air Wing — Alfa (A) Grade</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section section-alt" id="contact">
+    <div class="container contact-inner">
+      <p class="section-tag mono">06 // contact</p>
+      <h2 class="section-title">Let's build something</h2>
+      <p class="contact-sub reveal">
+        Open to interesting opportunities — MERN stack roles, front-end engineering, or just a chat about React architecture.
+      </p>
+      <div class="contact-links reveal">
+        <a href="mailto:harshitmi4@gmail.com" class="contact-card">
+          <span class="contact-label mono">email</span>
+          <span>harshitmi4@gmail.com</span>
+        </a>
+        <a href="https://github.com/HarshitThakur007" target="_blank" rel="noopener" class="contact-card">
+          <span class="contact-label mono">github</span>
+          <span>@HarshitThakur007</span>
+        </a>
+        <a href="https://www.linkedin.com/in/harshit-thakur-44118b173/" target="_blank" rel="noopener" class="contact-card">
+          <span class="contact-label mono">linkedin</span>
+          <span>harshit-thakur</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <p class="mono">© <span id="year"></span> Harshit Thakur. Built with HTML, CSS &amp; JS — hosted on GitHub Pages.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
