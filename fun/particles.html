@@ -5,21 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Particle Playground — canvas physics toy | Harshit Thakur</title>
 <meta name="description" content="A canvas physics toy — your cursor spawns particles, gravity toggles, colors drift. A fun mini-project by Harshit Thakur.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect x='3' y='3' width='34' height='34' rx='8' fill='%23FF6B5E'/%3E%3Ctext x='20' y='27' font-family='Arial, sans-serif' font-weight='800' font-size='15' fill='%230D1128' text-anchor='middle'%3EHT%3C/text%3E%3C/svg%3E">
-<meta name="theme-color" content="#0d1128">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect x='3' y='3' width='34' height='34' rx='8' fill='%238B5CF6'/%3E%3Ctext x='20' y='27' font-family='Arial, sans-serif' font-weight='800' font-size='15' fill='%23F5F3FF' text-anchor='middle'%3EHT%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#09090b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0d1128;
-  --surface: rgba(22, 27, 61, 0.82);
+  --bg: #09090b;
+  --surface: rgba(16, 16, 20, 0.85);
   --border: rgba(255,255,255,0.1);
   --border-strong: rgba(255,255,255,0.2);
-  --text: #eceeff;
-  --text-dim: #8891c9;
-  --accent: #ff6b5e;
-  --accent-soft: rgba(255,107,94,0.15);
-  --on-accent: #2a0e09;
+  --text: #f4f4f5;
+  --text-dim: #a1a1aa;
+  --accent: #8b5cf6;
+  --accent-soft: rgba(139,92,246,0.16);
+  --on-accent: #f5f3ff;
   --display: 'Space Grotesk', sans-serif;
   --mono: 'JetBrains Mono', monospace;
   --radius: 12px;
@@ -112,7 +112,7 @@ canvas { display:block; position: fixed; inset: 0; }
 
 <header class="topbar">
   <a href="../index.html" class="logo">
-    <svg viewBox="0 0 40 40" width="30" height="30"><rect x="3" y="3" width="34" height="34" rx="9" fill="#ff6b5e" transform="rotate(-4 20 20)"/><text x="20" y="27" font-family="'Space Grotesk',sans-serif" font-weight="800" font-size="16" fill="#2a0e09" text-anchor="middle">HT</text></svg>
+    <svg viewBox="0 0 40 40" width="30" height="30"><rect x="3" y="3" width="34" height="34" rx="9" fill="#8b5cf6" transform="rotate(-4 20 20)"/><text x="20" y="27" font-family="'Space Grotesk',sans-serif" font-weight="800" font-size="16" fill="#f5f3ff" text-anchor="middle">HT</text></svg>
     <span class="title">Particle Playground</span>
   </a>
   <a href="../index.html#fun" class="back-link">← back to site</a>
@@ -161,7 +161,7 @@ const particles = [];
 let mode = 'spray';
 let gravity = false;
 let trails = true;
-let hue = 8;                 // starts near the site's coral accent
+let hue = 262;               // starts near the site's violet accent
 let pointer = { x: W/2, y: H/2, px: W/2, py: H/2, down: false, active: false };
 let interacted = false;
 
@@ -264,10 +264,10 @@ const stFps = document.getElementById('stFps');
 function step(){
   // background / trails
   if (trails) {
-    ctx.fillStyle = 'rgba(13, 17, 40, 0.16)';
+    ctx.fillStyle = 'rgba(9, 9, 11, 0.16)';
     ctx.fillRect(0, 0, W, H);
   } else {
-    ctx.fillStyle = '#0d1128';
+    ctx.fillStyle = '#09090b';
     ctx.fillRect(0, 0, W, H);
   }
 
@@ -336,7 +336,7 @@ function step(){
   requestAnimationFrame(step);
 }
 
-ctx.fillStyle = '#0d1128';
+ctx.fillStyle = '#09090b';
 ctx.fillRect(0, 0, W, H);
 requestAnimationFrame(step);
 
