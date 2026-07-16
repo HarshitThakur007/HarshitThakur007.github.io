@@ -400,6 +400,67 @@ ul { list-style: none; }
 .project-card h3 { font-family: var(--display); font-size: 19px; font-weight: 700; color: var(--text); }
 .project-card p { color: var(--text-dim); font-size: 14.5px; }
 
+/* ---------- FUN LAB ---------- */
+.fun-sub {
+  color: var(--text-dim);
+  font-size: 15.5px;
+  max-width: 560px;
+  margin: -20px 0 36px;
+}
+
+.fun-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.fun-card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  overflow: hidden;
+}
+
+a.fun-card {
+  border-color: rgba(255, 107, 94, 0.3);
+  background: linear-gradient(150deg, var(--surface) 0%, rgba(255, 107, 94, 0.08) 130%);
+  cursor: pointer;
+}
+a.fun-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--accent);
+}
+a.fun-card:hover .fun-icon { transform: rotate(-10deg) scale(1.15); }
+
+.fun-card-soon { opacity: 0.75; }
+.fun-card-soon:hover { transform: translateY(-3px); border-color: var(--border-strong); }
+
+.fun-icon {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  font-size: 30px;
+  opacity: 0.85;
+  transition: transform 0.25s ease;
+}
+
+.fun-top {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+.fun-card h3 { font-family: var(--display); font-size: 19px; font-weight: 700; color: var(--text); }
+.fun-card p { color: var(--text-dim); font-size: 14px; flex-grow: 1; }
+
 /* ---------- EDUCATION ---------- */
 .edu-grid {
   display: grid;
@@ -485,7 +546,7 @@ ul { list-style: none; }
     gap: 16px;
     z-index: 60;
   }
-  .skills-grid, .project-grid, .edu-grid { grid-template-columns: 1fr; }
+  .skills-grid, .project-grid, .edu-grid, .fun-grid { grid-template-columns: 1fr; }
   .project-card-featured { grid-column: auto; }
   .stat-row { grid-template-columns: repeat(2, 1fr); gap: 14px; }
   .hero { padding: 90px 0 70px; }
