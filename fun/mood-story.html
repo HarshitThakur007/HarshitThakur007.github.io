@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoodLoom — mood & emoji story generator | Harshit Thakur</title>
+<meta name="description" content="Pick a mood or a few emojis and MoodLoom weaves a tiny story with a matching vibe — a fun mini-project by Harshit Thakur.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect x='3' y='3' width='34' height='34' rx='8' fill='%23FF6B5E'/%3E%3Ctext x='20' y='27' font-family='Arial, sans-serif' font-weight='800' font-size='15' fill='%230D1128' text-anchor='middle'%3EHT%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#0d1128">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1128;
+  --bg-alt: #10142c;
+  --surface: #161b3d;
+  --surface-2: #1b2147;
+  --border: rgba(255,255,255,0.08);
+  --border-strong: rgba(255,255,255,0.18);
+  --text: #eceeff;
+  --text-dim: #8891c9;
+  --accent: #ff6b5e;
+  --accent-soft: rgba(255,107,94,0.12);
+  --accent-2: #8ea2ff;
+  --on-accent: #2a0e09;
+  --display: 'Space Grotesk', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Inter', -apple-system, sans-serif;
+  --radius: 12px;
+  --shadow-sm: 0 2px 12px rgba(0,0,0,0.35);
+  --shadow-md: 0 10px 28px rgba(0,0,0,0.45);
+  --max-w: 860px;
+  --glow: rgba(255,107,94,0.10);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: 1.6;
+  font-size: 16px;
+  overflow-x: hidden;
+  transition: background 0.6s ease;
+}
+body::before {
+  content:'';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 45% at 50% 0%, var(--glow), transparent 70%);
+  pointer-events: none;
+  transition: background 0.8s ease;
+  z-index: 0;
+}
+.container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.mono { font-family: var(--mono); }
+.accent { color: var(--accent); transition: color 0.5s ease; }
+a { color: inherit; text-decoration: none; }
+
+/* nav */
+.nav { position: sticky; top:0; z-index:50; background: rgba(13,17,40,0.75); backdrop-filter: blur(10px); border-bottom:1px solid var(--border); }
+.nav-inner { max-width: var(--max-w); margin:0 auto; padding:14px 24px; display:flex; align-items:center; justify-content:space-between; }
+.logo { display:flex; align-items:center; gap:10px; font-family:var(--display); font-weight:700; font-size:18px; }
+.back-link { font-family: var(--mono); font-size:13px; color: var(--text-dim); }
+.back-link:hover { color: var(--accent); }
+
+/* hero */
+.hero { padding: 64px 0 30px; text-align:center; position:relative; }
+.hero h1 { font-family: var(--display); font-size: clamp(30px,5vw,46px); font-weight:800; letter-spacing:-0.02em; margin-bottom:12px; }
+.hero-sub { color: var(--text-dim); max-width: 520px; margin: 0 auto; font-size: 15.5px; }
+.hero-tag { font-family: var(--mono); color: var(--accent); font-size: 13px; margin-bottom: 10px; transition: color 0.5s ease; }
+.float-emoji { position:absolute; font-size:26px; opacity:0.25; animation: floaty 7s ease-in-out infinite; pointer-events:none; user-select:none; }
+@keyframes floaty { 0%,100%{ transform: translateY(0) rotate(-6deg);} 50%{ transform: translateY(-18px) rotate(8deg);} }
+
+/* panels */
+.panel { background: var(--surface); border:1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 26px; margin-bottom: 20px; }
+.panel h2 { font-family: var(--display); font-size: 15px; font-weight:700; color: var(--accent-2); margin-bottom: 4px; }
+.panel .hint { color: var(--text-dim); font-size: 13px; font-family: var(--mono); margin-bottom: 16px; }
+
+/* mood chips */
+.mood-grid { display:flex; flex-wrap:wrap; gap:10px; }
+.mood-chip {
+  font-family: var(--mono); font-size: 14px;
+  background: var(--surface-2); border:1px solid var(--border);
+  color: var(--text-dim); padding: 10px 18px; border-radius: 24px;
+  cursor: pointer; transition: all 0.2s ease; user-select:none;
+}
+.mood-chip:hover { border-color: var(--border-strong); color: var(--text); transform: translateY(-2px); }
+.mood-chip.active { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 18px var(--glow); }
+
+/* emoji grid */
+.emoji-grid { display:grid; grid-template-columns: repeat(auto-fill,minmax(52px,1fr)); gap:8px; }
+.emoji-btn {
+  font-size: 24px; padding: 9px 0; text-align:center;
+  background: var(--surface-2); border:1px solid var(--border); border-radius: 10px;
+  cursor: pointer; transition: all 0.15s ease; user-select:none;
+}
+.emoji-btn:hover { transform: scale(1.12); border-color: var(--border-strong); }
+.emoji-btn.active { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 14px var(--glow); transform: scale(1.08); }
+.emoji-count { font-family: var(--mono); font-size:12px; color: var(--text-dim); margin-top:10px; }
+
+/* generate */
+.gen-row { text-align:center; margin: 6px 0 26px; }
+.btn-gen {
+  font-family: var(--display); font-weight: 700; font-size: 16px;
+  background: var(--accent); color: var(--on-accent);
+  border: none; border-radius: var(--radius);
+  padding: 15px 42px; cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.5s ease;
+  box-shadow: 0 6px 24px var(--glow);
+}
+.btn-gen:hover { transform: translateY(-2px); box-shadow: 0 10px 32px var(--glow); }
+.btn-gen:active { transform: translateY(0); }
+.btn-gen:disabled { opacity: 0.5; cursor: not-allowed; transform:none; }
+
+/* output */
+.output { display:none; }
+.output.show { display:block; animation: rise 0.5s ease; }
+@keyframes rise { from { opacity:0; transform: translateY(14px);} to { opacity:1; transform:none;} }
+.out-card {
+  background: linear-gradient(150deg, var(--surface) 0%, var(--accent-soft) 130%);
+  border:1px solid var(--border-strong); border-radius: var(--radius);
+  box-shadow: var(--shadow-md); padding: 30px; margin-bottom: 20px;
+  transition: background 0.6s ease;
+}
+.out-head { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom: 6px; }
+.out-title { font-family: var(--display); font-size: 22px; font-weight: 800; }
+.out-emojis { font-size: 20px; letter-spacing: 4px; }
+.vibe-line { font-family: var(--mono); font-size: 12.5px; color: var(--accent-2); margin-bottom: 18px; }
+.story { font-size: 17px; line-height: 1.75; color: var(--text); min-height: 96px; }
+.story .cursor { display:inline-block; width:9px; height:1.05em; background: var(--accent); vertical-align: text-bottom; margin-left:2px; animation: blink 1s step-end infinite; }
+@keyframes blink { 50% { opacity:0; } }
+
+.palette { display:flex; gap:10px; margin-top: 22px; align-items:center; }
+.swatch { width:34px; height:34px; border-radius: 9px; border:1px solid var(--border-strong); transition: background 0.5s ease; }
+.palette-label { font-family: var(--mono); font-size: 11.5px; color: var(--text-dim); margin-left:4px; }
+
+.tracklist { margin-top: 22px; border-top: 1px dashed var(--border-strong); padding-top: 16px; }
+.tracklist p.tl-label { font-family: var(--mono); font-size: 12px; color: var(--accent); margin-bottom: 8px; }
+.tracklist ol { list-style:none; display:flex; flex-direction:column; gap:6px; }
+.tracklist li { font-family: var(--mono); font-size: 13.5px; color: var(--text-dim); }
+.tracklist li span.num { color: var(--accent-2); margin-right: 8px; }
+
+.out-actions { display:flex; gap:12px; flex-wrap:wrap; }
+.btn-sm {
+  font-family: var(--mono); font-size: 13px;
+  background: rgba(255,255,255,0.03); color: var(--text);
+  border: 1px solid var(--border-strong); border-radius: 10px;
+  padding: 10px 20px; cursor:pointer; transition: all 0.15s ease;
+}
+.btn-sm:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+/* footer */
+.footer { padding: 40px 0 30px; border-top:1px solid var(--border); margin-top: 50px; text-align:center; color: var(--text-dim); font-size: 13px; }
+.footer .mono { font-size: 12px; opacity: 0.8; }
+
+@media (max-width: 600px) {
+  .container { padding: 0 18px; }
+  .hero { padding: 44px 0 22px; }
+  .panel { padding: 20px; }
+  .out-card { padding: 22px; }
+  .float-emoji { display:none; }
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 40 40" width="32" height="32"><rect x="3" y="3" width="34" height="34" rx="9" style="fill:var(--accent);" transform="rotate(-4 20 20)"/><text x="20" y="27" font-family="'Space Grotesk',sans-serif" font-weight="800" font-size="16" style="fill:var(--on-accent);" text-anchor="middle">HT</text></svg>
+      <span>MoodLoom</span>
+    </a>
+    <a href="../index.html#fun" class="back-link">← back to site</a>
+  </div>
+</header>
+
+<main class="container">
+
+  <section class="hero">
+    <span class="float-emoji" style="left:6%; top:20%;">🌙</span>
+    <span class="float-emoji" style="right:8%; top:14%; animation-delay:-2s;">✨</span>
+    <span class="float-emoji" style="left:16%; bottom:0; animation-delay:-4s;">☕</span>
+    <span class="float-emoji" style="right:18%; bottom:8%; animation-delay:-1s;">🌧️</span>
+    <p class="hero-tag mono">~/fun/moodloom</p>
+    <h1>Pick a mood.<br>Get a <span class="accent" id="heroWord">tiny story</span>.</h1>
+    <p class="hero-sub">Choose a vibe, sprinkle in a few emojis, and MoodLoom weaves a micro-story with a matching color palette &amp; imaginary soundtrack. No AI API — just curated chaos, generated entirely in your browser.</p>
+  </section>
+
+  <section class="panel">
+    <h2>1 · Mood</h2>
+    <p class="hint">// sets the tone &amp; the colors</p>
+    <div class="mood-grid" id="moodGrid"></div>
+  </section>
+
+  <section class="panel">
+    <h2>2 · Emojis <span style="font-weight:400;color:var(--text-dim);">(optional)</span></h2>
+    <p class="hint">// up to 3 — they get woven into the story</p>
+    <div class="emoji-grid" id="emojiGrid"></div>
+    <p class="emoji-count" id="emojiCount">0 / 3 selected</p>
+  </section>
+
+  <div class="gen-row">
+    <button class="btn-gen" id="genBtn" disabled>✦ weave my story</button>
+  </div>
+
+  <section class="output" id="output">
+    <div class="out-card">
+      <div class="out-head">
+        <span class="out-title" id="outTitle"></span>
+        <span class="out-emojis" id="outEmojis"></span>
+      </div>
+      <p class="vibe-line" id="vibeLine"></p>
+      <p class="story" id="story"></p>
+      <div class="palette" id="palette"></div>
+      <div class="tracklist">
+        <p class="tl-label">// imaginary soundtrack</p>
+        <ol id="tracklist"></ol>
+      </div>
+    </div>
+    <div class="out-actions">
+      <button class="btn-sm" id="againBtn">↻ weave another</button>
+      <button class="btn-sm" id="copyBtn">⧉ copy story</button>
+      <button class="btn-sm" id="shuffleBtn">🎲 surprise me</button>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p>A fun mini-project by <a href="../index.html" style="color:var(--accent);">Harshit Thakur</a></p>
+    <p class="mono">zero backend · zero API keys · 100% client-side vibes</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+'use strict';
+
+/* ---------------- data ---------------- */
+const MOODS = {
+  cozy: {
+    label: 'Cozy', icon: '☕',
+    colors: { accent:'#ffb26b', accent2:'#ffd9a8', glow:'rgba(255,178,107,0.14)', soft:'rgba(255,178,107,0.12)', on:'#2a1a09' },
+    palette: ['#ffb26b','#8a5a3b','#2b1d12'],
+    vibe: ['92% blanket', '78% warm light', '64% slow rain', '85% soft jazz', '71% second cup'],
+    places: ['a bookshop that smells of cinnamon','the window seat of a sleeper train','a cabin where the kettle never cools','a library after closing time','grandma\'s kitchen on a Sunday'],
+    things: ['a half-finished letter','a mug with a chipped handle','an old paperback with notes in the margins','a wool sweater two sizes too big','a playlist of songs that skip'],
+    feels: ['unhurried','forgiven','quietly happy','at home','warm all the way through'],
+    openers: [
+      'The rain had settled in for the evening, and so had {name}, tucked into {place} with {thing}.',
+      'In {place}, time moved like honey, and {name} was in no mood to argue with it.',
+      '{name} found {thing} in {place}, and decided the rest of the world could wait.'
+    ],
+    middles: [
+      'Outside, {motif}, but inside there was only the soft click of the heater and a story worth finishing.',
+      'Somewhere, {motif} — a small reminder that the best evenings ask for nothing.',
+      'The lamplight flickered once, twice, as if it too wanted to hear what happened next, while {motif}.'
+    ],
+    closers: [
+      'By midnight {name} felt {feel}, and that was more than enough.',
+      'Nothing was solved and nothing needed to be. {name} simply felt {feel}.',
+      'When sleep finally came, it found {name} {feel}, smiling at nothing in particular.'
+    ]
+  },
+  hyped: {
+    label: 'Hyped', icon: '⚡',
+    colors: { accent:'#ffe14d', accent2:'#ff8f6b', glow:'rgba(255,225,77,0.13)', soft:'rgba(255,225,77,0.12)', on:'#2a2409' },
+    palette: ['#ffe14d','#ff8f6b','#241f0a'],
+    vibe: ['110% energy', '98% bass drop', '87% victory lap', '93% caffeine', '120% main character'],
+    places: ['the last hour before the deadline','a rooftop with the whole city humming below','the front row of everything','a keyboard at 2am with all tests passing','the starting line'],
+    things: ['a to-do list with everything crossed out','an idea too loud to ignore','sneakers that haven\'t missed yet','a commit message that just says SHIP IT','one more impossible plan'],
+    feels: ['unstoppable','fully charged','three steps ahead','ready for round two','electric'],
+    openers: [
+      '{name} woke up before the alarm, which the alarm took personally, and sprinted straight toward {place}.',
+      'Armed with {thing}, {name} burst into {place} like a headline.',
+      'Nobody asked {name} to bring that much energy to {place}. {name} brought it anyway.'
+    ],
+    middles: [
+      'Meanwhile {motif}, and honestly? That just made it better.',
+      'The universe raised the stakes — {motif} — and {name} raised an eyebrow right back.',
+      'Somewhere in the chaos, {motif}, which everyone agreed was the perfect soundtrack.'
+    ],
+    closers: [
+      'By the end, {name} felt {feel}, and tomorrow was already nervous.',
+      'Final score: {name} 1, doubt 0. Feeling: {feel}.',
+      '{name} left {feel}, having turned a Tuesday into a highlight reel.'
+    ]
+  },
+  melancholy: {
+    label: 'Melancholy', icon: '🌧️',
+    colors: { accent:'#7ea8d9', accent2:'#a8b8e8', glow:'rgba(126,168,217,0.13)', soft:'rgba(126,168,217,0.12)', on:'#0a1a2a' },
+    palette: ['#7ea8d9','#4a5a80','#141a2c'],
+    vibe: ['74% blue hour', '82% old photographs', '67% unsent texts', '88% window rain', '59% almost'],
+    places: ['a bus stop where the bus already left','the city at blue hour','an apartment with one light on','a beach in the off-season','the last page of a good book'],
+    things: ['a ticket stub from a better day','a song that used to mean something else','an umbrella shared once','a photograph slightly out of focus','a voicemail never played twice'],
+    feels: ['a little lighter','strangely okay','soft around the edges','ready to begin again, slowly','honest with themselves at last'],
+    openers: [
+      '{name} stood in {place}, holding {thing} like a question with no rush for an answer.',
+      'The evening was the color of old denim when {name} returned to {place}.',
+      'Some days arrive pre-faded. {name} spent this one in {place}, keeping {thing} close.'
+    ],
+    middles: [
+      'Across the street, {motif}, beautiful in the way distant things are.',
+      'It rained the kind of rain that isn\'t sad, just thorough — while {motif}.',
+      'And still, {motif}, as if the world was quietly insisting it goes on.'
+    ],
+    closers: [
+      'Walking home, {name} felt {feel}. Not fixed. Just {feel}.',
+      'The night ended as gently as it began, and {name} felt {feel}.',
+      '{name} exhaled, finally {feel}, and let the streetlights walk them home.'
+    ]
+  },
+  dreamy: {
+    label: 'Dreamy', icon: '🌙',
+    colors: { accent:'#c9a0ff', accent2:'#8ea2ff', glow:'rgba(201,160,255,0.13)', soft:'rgba(201,160,255,0.12)', on:'#1c0a2a' },
+    palette: ['#c9a0ff','#8ea2ff','#191233'],
+    vibe: ['81% stardust', '77% lucid', '90% floating', '68% déjà vu', '95% moonlit'],
+    places: ['a staircase that only goes sideways','a garden that blooms at midnight','the space between two songs','a city made entirely of libraries','the shallow end of the sky'],
+    things: ['a key that fits every door except its own','a map drawn from memory of a place never visited','a jar of collected echoes','a compass that points to Tuesday','a lantern full of moths and secrets'],
+    feels: ['weightless','half-remembered and fully happy','stitched from starlight','gently infinite','like a chorus about to resolve'],
+    openers: [
+      'In the dream, {name} arrived at {place} carrying {thing}, which felt completely normal.',
+      '{name} blinked, and {place} unfolded like origami in reverse.',
+      'It began, as these things do, with {thing} humming softly in {place}.'
+    ],
+    middles: [
+      'Overhead, {motif}, rearranging the constellations just slightly.',
+      'The moon leaned closer to watch as {motif}.',
+      'Logic clocked out early; {motif}, and nobody found it strange.'
+    ],
+    closers: [
+      '{name} woke feeling {feel}, with glitter of the dream still in their pockets.',
+      'Morning came softly, and {name} rose {feel}, humming a song that doesn\'t exist yet.',
+      'And though the details dissolved, the feeling stayed: {feel}.'
+    ]
+  },
+  chaotic: {
+    label: 'Chaotic', icon: '🌀',
+    colors: { accent:'#ff5ea8', accent2:'#5effc9', glow:'rgba(255,94,168,0.13)', soft:'rgba(255,94,168,0.12)', on:'#2a0918' },
+    palette: ['#ff5ea8','#5effc9','#20102a'],
+    vibe: ['?!% logic', '404% plans', '99% plot twist', '73% oops', '100% no regrets'],
+    places: ['a group chat at 3am','the express lane with 47 items','a meeting that could have been a food fight','the wrong airport, confidently','aisle 7, where the rules end'],
+    things: ['a plan written on a napkin, in crayon','seventeen browser tabs and zero regrets','a suspiciously confident raccoon','the aux cord and questionable taste','a fork in a toaster of decisions'],
+    feels: ['victorious, somehow','legally fine','richer in stories','banned from one (1) establishment','ready to do it all again'],
+    openers: [
+      'It started reasonably: {name}, {place}, and {thing}. It did not stay reasonable.',
+      '{name} had one job. Instead, {name} brought {thing} to {place}.',
+      'The plan was simple. Naturally, {name} ignored it and headed to {place} armed only with {thing}.'
+    ],
+    middles: [
+      'Then — and witnesses confirm this — {motif}, twice.',
+      'At some point {motif}, which explains the confetti but not the llama.',
+      'Physics filed a complaint when {motif}, but momentum had already won.'
+    ],
+    closers: [
+      'When the dust settled, {name} emerged {feel}.',
+      'No one can prove anything, and {name} walked away {feel}.',
+      'The moral is unclear, but {name} ended the day {feel}, which is what matters.'
+    ]
+  },
+  adventurous: {
+    label: 'Adventurous', icon: '🧭',
+    colors: { accent:'#5ed98a', accent2:'#ffd166', glow:'rgba(94,217,138,0.13)', soft:'rgba(94,217,138,0.12)', on:'#0a2a14' },
+    palette: ['#5ed98a','#ffd166','#10241a'],
+    vibe: ['86% wanderlust', '91% open road', '79% summit air', '84% new stamp', '96% "why not?"'],
+    places: ['a trailhead with no signal and no complaints','a night market three time zones from home','the edge of the map, where the good stuff starts','a border crossing at golden hour','a harbor where every boat has a rumor'],
+    things: ['a backpack packed in nine minutes','a phrasebook missing the important pages','boots that have opinions now','a one-way ticket and a hunch','a camera full of almost-postcards'],
+    feels: ['wider than yesterday','pleasantly lost','full of borrowed horizons','sun-tired and satisfied','already planning the next one'],
+    openers: [
+      '{name} traded a perfectly good routine for {place}, carrying {thing} and zero doubts.',
+      'The itinerary said no. {name} said yes, and set off for {place} with {thing}.',
+      'At dawn, {name} stood before {place}, {thing} slung over one shoulder.'
+    ],
+    middles: [
+      'Halfway there, {motif} — the kind of detour maps apologize for and memories thank you for.',
+      'A local swore the shortcut was cursed. It wasn\'t. But {motif}, which was better.',
+      'The weather changed its mind twice, {motif}, and the trail kept unrolling anyway.'
+    ],
+    closers: [
+      '{name} came back {feel}, with mud on the boots to prove it.',
+      'The photos won\'t do it justice. {name} returned {feel}.',
+      'By nightfall, {name} felt {feel} — the map now folded to a brand-new page.'
+    ]
+  }
+};
+
+const EMOJIS = {
+  '🌧️': 'rain rehearsed its softest percussion',
+  '✨': 'a scatter of sparks refused to land',
+  '🚀': 'a rocket somewhere cleared its throat',
+  '🌊': 'the sea kept redrafting the shoreline',
+  '🔥': 'a small fire told tall stories',
+  '🌸': 'petals staged a slow, pink escape',
+  '🎧': 'a bassline leaked out of someone\'s headphones',
+  '🐈': 'a cat supervised everything from a windowsill',
+  '☕': 'steam curled off a fresh cup like cursive',
+  '🌙': 'the moon pretended not to eavesdrop',
+  '⚡': 'lightning signed its name across the sky',
+  '🍜': 'a bowl of noodles solved at least one problem',
+  '📚': 'a stack of books leaned in to listen',
+  '🎸': 'a guitar chord hung in the air, unresolved',
+  '🦉': 'an owl asked the only question worth asking',
+  '🍂': 'leaves practiced their falling in style',
+  '🏔️': 'the mountains kept their oldest secret',
+  '🎈': 'a red balloon escaped with great dignity',
+  '🧋': 'a boba pearl made a break for freedom',
+  '🛸': 'something in the sky definitely waved back',
+  '🌵': 'a cactus thrived out of pure stubbornness',
+  '🕯️': 'a candle held its breath dramatically',
+  '🎲': 'the dice were loaded with good luck for once'
+};
+
+const NAMES = ['Mira','Theo','Zara','Kabir','June','Ravi','Nova','Ash','Priya','Leo','Wren','Dev'];
+const TRACK_A = ['Midnight','Paper','Neon','Slow','Golden','Static','Velvet','Borrowed','Analog','Half-Moon','Polaroid','Quiet'];
+const TRACK_B = ['Trains','Confetti','Horizons','Sundays','Gravity','Postcards','Echoes','Fireflies','Detours','Chapters','Tides','Sparks'];
+const ARTISTS = ['The Window Seats','Lo-Fi Llama','Cassette Ghost','Peach Static','The Unsent Texts','Comet Club','Marginalia','Soft Launch','Night Bus Choir','Glass Balloon'];
+
+/* ---------------- helpers ---------------- */
+const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+const pickN = (arr, n) => [...arr].sort(() => Math.random() - 0.5).slice(0, n);
+const fill = (tpl, slots) => tpl.replace(/\{(\w+)\}/g, (_, k) => slots[k] ?? '');
+
+/* ---------------- state ---------------- */
+let mood = null;
+let chosen = [];
+
+/* ---------------- build UI ---------------- */
+const moodGrid = document.getElementById('moodGrid');
+Object.entries(MOODS).forEach(([key, m]) => {
+  const b = document.createElement('button');
+  b.className = 'mood-chip';
+  b.textContent = m.icon + ' ' + m.label;
+  b.onclick = () => selectMood(key, b);
+  moodGrid.appendChild(b);
+});
+
+const emojiGrid = document.getElementById('emojiGrid');
+Object.keys(EMOJIS).forEach(e => {
+  const b = document.createElement('button');
+  b.className = 'emoji-btn';
+  b.textContent = e;
+  b.onclick = () => toggleEmoji(e, b);
+  emojiGrid.appendChild(b);
+});
+
+function selectMood(key, btn){
+  mood = key;
+  document.querySelectorAll('.mood-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  applyTheme(MOODS[key].colors);
+  document.getElementById('genBtn').disabled = false;
+}
+
+function toggleEmoji(e, btn){
+  const i = chosen.indexOf(e);
+  if (i > -1) { chosen.splice(i,1); btn.classList.remove('active'); }
+  else if (chosen.length < 3) { chosen.push(e); btn.classList.add('active'); }
+  document.getElementById('emojiCount').textContent = chosen.length + ' / 3 selected';
+}
+
+function applyTheme(c){
+  const r = document.documentElement.style;
+  r.setProperty('--accent', c.accent);
+  r.setProperty('--accent-2', c.accent2);
+  r.setProperty('--glow', c.glow);
+  r.setProperty('--accent-soft', c.soft);
+  r.setProperty('--on-accent', c.on);
+}
+
+/* ---------------- generation ---------------- */
+let typeTimer = null;
+let currentStory = '';
+
+function generate(){
+  const m = MOODS[mood];
+  const name = pick(NAMES);
+  const motifs = chosen.length ? chosen.map(e => EMOJIS[e]) : [pick(Object.values(EMOJIS))];
+
+  const slots = {
+    name,
+    place: pick(m.places),
+    thing: pick(m.things),
+    feel: pick(m.feels),
+    motif: motifs[0]
+  };
+
+  let story = fill(pick(m.openers), slots) + ' ' + fill(pick(m.middles), slots);
+  // weave extra chosen motifs in
+  for (let i = 1; i < motifs.length; i++) {
+    story += ' ' + pick(['And then', 'Meanwhile,', 'Not far away,', 'For good measure,']) + ' ' + motifs[i] + '.';
+  }
+  story += ' ' + fill(pick(m.closers), slots);
+  currentStory = story;
+
+  // header
+  document.getElementById('outTitle').textContent = m.icon + ' ' + pick(['A', 'One', 'The']) + ' ' + m.label.toLowerCase() + ' ' + pick(['tale','episode','interlude','chapter','dispatch']);
+  document.getElementById('outEmojis').textContent = chosen.join(' ');
+  document.getElementById('vibeLine').textContent = '// vibe check: ' + pickN(m.vibe, 3).join(' · ');
+
+  // palette
+  const pal = document.getElementById('palette');
+  pal.innerHTML = '';
+  m.palette.forEach(hex => {
+    const s = document.createElement('div');
+    s.className = 'swatch';
+    s.style.background = hex;
+    s.title = hex;
+    pal.appendChild(s);
+  });
+  const lbl = document.createElement('span');
+  lbl.className = 'palette-label';
+  lbl.textContent = m.palette.join(' · ');
+  pal.appendChild(lbl);
+
+  // tracklist
+  const tl = document.getElementById('tracklist');
+  tl.innerHTML = '';
+  for (let i = 0; i < 3; i++) {
+    const li = document.createElement('li');
+    li.innerHTML = '<span class="num">0' + (i+1) + '</span>' + pick(TRACK_A) + ' ' + pick(TRACK_B) + ' — ' + pick(ARTISTS);
+    tl.appendChild(li);
+  }
+
+  // show + typewriter
+  const out = document.getElementById('output');
+  out.classList.add('show');
+  out.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  typewrite(story);
+}
+
+function typewrite(text){
+  clearInterval(typeTimer);
+  const el = document.getElementById('story');
+  let i = 0;
+  el.innerHTML = '<span class="cursor"></span>';
+  typeTimer = setInterval(() => {
+    i += 2;
+    if (i >= text.length) {
+      i = text.length;
+      clearInterval(typeTimer);
+      el.textContent = text;
+    } else {
+      el.innerHTML = escapeHtml(text.slice(0, i)) + '<span class="cursor"></span>';
+    }
+  }, 16);
+}
+
+function escapeHtml(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ---------------- actions ---------------- */
+document.getElementById('genBtn').onclick = generate;
+document.getElementById('againBtn').onclick = generate;
+
+document.getElementById('shuffleBtn').onclick = () => {
+  // random mood
+  const keys = Object.keys(MOODS);
+  const key = pick(keys);
+  const btns = document.querySelectorAll('.mood-chip');
+  selectMood(key, btns[keys.indexOf(key)]);
+  // random emojis
+  chosen = [];
+  document.querySelectorAll('.emoji-btn').forEach(b => b.classList.remove('active'));
+  const all = [...document.querySelectorAll('.emoji-btn')];
+  pickN(all, 2).forEach(b => toggleEmoji(b.textContent, b));
+  generate();
+};
+
+document.getElementById('copyBtn').onclick = function(){
+  navigator.clipboard.writeText(currentStory).then(() => {
+    this.textContent = '✓ copied!';
+    setTimeout(() => { this.textContent = '⧉ copy story'; }, 1500);
+  });
+};
+
+/* rotating hero word */
+const words = ['tiny story','micro-tale','vibe','soundtrack','color palette'];
+let wi = 0;
+setInterval(() => {
+  wi = (wi + 1) % words.length;
+  document.getElementById('heroWord').textContent = words[wi];
+}, 2400);
+
+})();
+</script>
+</body>
+</html>
